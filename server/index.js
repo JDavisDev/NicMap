@@ -12,13 +12,81 @@ app.use(express.json());
 let deals = [];
 let nextId = 1;
 
-// GET all deals
+// Haversine formula to calculate distance between two points in miles
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 3959; // Earth's radius in miles
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function toRad(deg) {
+  return deg * (Math.PI / 180);
+}
+
+// Geocode a zip code using free Zippopotam API
+async function geocodeZipCode(zipCode) {
+  try {
+    const response = await fetch(`https://api.zippopotam.us/us/${zipCode}`);
+    if (!response.ok) return null;
+    const data = await response.json();
+    if (data.places && data.places.length > 0) {
+      return {
+        latitude: parseFloat(data.places[0].latitude),
+        longitude: parseFloat(data.places[0].longitude),
+        city: data.places[0]['place name'],
+        state: data.places[0]['state abbreviation']
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error('Geocoding error:', error);
+    return null;
+  }
+}
+
+// GET geocode a zip code
+app.get('/api/geocode/:zipCode', async (req, res) => {
+  const geoData = await geocodeZipCode(req.params.zipCode);
+  if (!geoData) {
+    return res.status(404).json({ error: 'Zip code not found' });
+  }
+  res.json(geoData);
+});
+
+// GET all deals (with optional location filtering)
 app.get('/api/deals', (req, res) => {
-  // Return deals sorted by most recent first
-  const sortedDeals = [...deals].sort((a, b) =>
-    new Date(b.createdAt) - new Date(a.createdAt)
-  );
-  res.json(sortedDeals);
+  const { lat, lng, radius = 30 } = req.query;
+
+  let filteredDeals = [...deals];
+
+  // If user location provided, filter by distance
+  if (lat && lng) {
+    const userLat = parseFloat(lat);
+    const userLng = parseFloat(lng);
+    const maxRadius = parseFloat(radius);
+
+    filteredDeals = deals
+      .filter(deal => deal.latitude && deal.longitude)
+      .map(deal => ({
+        ...deal,
+        distance: calculateDistance(userLat, userLng, deal.latitude, deal.longitude)
+      }))
+      .filter(deal => deal.distance <= maxRadius)
+      .sort((a, b) => a.distance - b.distance); // Sort by closest first
+  } else {
+    // No location provided, return all sorted by most recent
+    filteredDeals = filteredDeals.sort((a, b) =>
+      new Date(b.createdAt) - new Date(a.createdAt)
+    );
+  }
+
+  res.json(filteredDeals);
 });
 
 // GET single deal by ID
@@ -31,13 +99,21 @@ app.get('/api/deals/:id', (req, res) => {
 });
 
 // POST create new deal
-app.post('/api/deals', (req, res) => {
-  const { storeName, product, originalPrice, salePrice, location, description } = req.body;
+app.post('/api/deals', async (req, res) => {
+  const { storeName, product, originalPrice, salePrice, location, description, zipCode } = req.body;
 
   // Basic validation
-  if (!storeName || !product || !salePrice || !location) {
+  if (!storeName || !product || !salePrice || !zipCode) {
     return res.status(400).json({
-      error: 'Missing required fields: storeName, product, salePrice, and location are required'
+      error: 'Missing required fields: storeName, product, salePrice, and zipCode are required'
+    });
+  }
+
+  // Geocode the zip code to get coordinates
+  const geoData = await geocodeZipCode(zipCode);
+  if (!geoData) {
+    return res.status(400).json({
+      error: 'Invalid zip code. Please enter a valid US zip code.'
     });
   }
 
@@ -47,7 +123,10 @@ app.post('/api/deals', (req, res) => {
     product,
     originalPrice: originalPrice ? parseFloat(originalPrice) : null,
     salePrice: parseFloat(salePrice),
-    location,
+    location: location || `${geoData.city}, ${geoData.state}`,
+    zipCode,
+    latitude: geoData.latitude,
+    longitude: geoData.longitude,
     description: description || '',
     createdAt: new Date().toISOString(),
     upvotes: 0

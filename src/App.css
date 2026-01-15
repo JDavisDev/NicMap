@@ -36,6 +36,89 @@ body {
   font-size: 1.1rem;
 }
 
+.location-status {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+.location-active {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.zip-form {
+  margin-top: 16px;
+}
+
+.zip-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.zip-input-group {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.zip-input-group input {
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  width: 120px;
+  text-align: center;
+}
+
+.zip-input-group button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background: white;
+  color: #4a90d9;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.zip-input-group button:hover {
+  background: #f0f0f0;
+}
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  gap: 8px;
+  margin: 24px 0 0 0;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid #4a90d9;
+  background: white;
+  color: #4a90d9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-btn:hover {
+  background: #f0f7ff;
+}
+
+.toggle-btn.active {
+  background: #4a90d9;
+  color: white;
+}
+
 .app-main {
   flex: 1;
   max-width: 1200px;

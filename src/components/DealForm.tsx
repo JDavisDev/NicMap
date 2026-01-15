@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import './DealForm.css';
 
+// On! product catalog
+const ON_FLAVORS = ['Wintergreen', 'Mint', 'Coffee', 'Cinnamon', 'Citrus', 'Berry', 'Original'];
+const ON_STRENGTHS = ['2mg', '4mg', '8mg'];
+
+const PRODUCTS = ON_FLAVORS.flatMap(flavor =>
+  ON_STRENGTHS.map(strength => `On! ${flavor} ${strength}`)
+);
+
 interface DealFormProps {
   onDealSubmitted: () => void;
 }
@@ -12,6 +20,7 @@ const DealForm: React.FC<DealFormProps> = ({ onDealSubmitted }) => {
     originalPrice: '',
     salePrice: '',
     location: '',
+    zipCode: '',
     description: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,6 +60,7 @@ const DealForm: React.FC<DealFormProps> = ({ onDealSubmitted }) => {
         originalPrice: '',
         salePrice: '',
         location: '',
+        zipCode: '',
         description: ''
       });
       setSuccess(true);
@@ -80,17 +90,31 @@ const DealForm: React.FC<DealFormProps> = ({ onDealSubmitted }) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="location">Location *</label>
+            <label htmlFor="zipCode">Zip Code *</label>
             <input
               type="text"
-              id="location"
-              name="location"
-              value={formData.location}
+              id="zipCode"
+              name="zipCode"
+              value={formData.zipCode}
               onChange={handleChange}
-              placeholder="e.g., 123 Main St, Austin, TX"
+              placeholder="e.g., 78701"
+              maxLength={5}
+              pattern="\d{5}"
               required
             />
           </div>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="location">Address (optional)</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            placeholder="e.g., 123 Main St"
+          />
         </div>
 
         <div className="form-group">
@@ -99,11 +123,17 @@ const DealForm: React.FC<DealFormProps> = ({ onDealSubmitted }) => {
             type="text"
             id="product"
             name="product"
+            list="product-list"
             value={formData.product}
             onChange={handleChange}
-            placeholder="e.g., Zyn Cool Mint 6mg"
+            placeholder="Start typing to see suggestions..."
             required
           />
+          <datalist id="product-list">
+            {PRODUCTS.map(product => (
+              <option key={product} value={product} />
+            ))}
+          </datalist>
         </div>
 
         <div className="form-row">

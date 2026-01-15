@@ -1,0 +1,103 @@
+.map-container {
+  margin-top: 24px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.deal-map {
+  height: 500px;
+  width: 100%;
+  z-index: 1;
+}
+
+.map-empty {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+
+/* Popup Styles */
+.popup-content {
+  min-width: 200px;
+}
+
+.popup-content h3 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.popup-store {
+  font-weight: 600;
+  color: #4a90d9;
+  margin-bottom: 4px;
+}
+
+.popup-location {
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.popup-pricing {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.popup-original {
+  color: #999;
+  text-decoration: line-through;
+  font-size: 0.9rem;
+}
+
+.popup-sale {
+  color: #e74c3c;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.popup-savings {
+  background: #2ecc71;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.popup-upvote {
+  background: #f5f5f5;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #4a90d9;
+  transition: background 0.2s;
+}
+
+.popup-upvote:hover {
+  background: #e8f4fd;
+}
+
+/* Override Leaflet popup styles */
+.leaflet-popup-content-wrapper {
+  border-radius: 10px;
+}
+
+.leaflet-popup-content {
+  margin: 12px 14px;
+}
+
+@media (max-width: 600px) {
+  .deal-map {
+    height: 400px;
+  }
+}

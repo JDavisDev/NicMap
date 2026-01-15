@@ -8,6 +8,8 @@ interface Deal {
   originalPrice: number | null;
   salePrice: number;
   location: string;
+  zipCode?: string;
+  distance?: number;
   description: string;
   createdAt: string;
   upvotes: number;
@@ -55,9 +57,9 @@ const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote }) => {
   if (deals.length === 0) {
     return (
       <div className="deal-list-container">
-        <h2>Recent Deals</h2>
+        <h2>Nearby Deals</h2>
         <div className="no-deals">
-          <p>No deals yet. Be the first to share a deal!</p>
+          <p>No deals found in your area. Be the first to share one!</p>
         </div>
       </div>
     );
@@ -65,7 +67,7 @@ const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote }) => {
 
   return (
     <div className="deal-list-container">
-      <h2>Recent Deals ({deals.length})</h2>
+      <h2>Nearby Deals ({deals.length})</h2>
       <div className="deals-grid">
         {deals.map(deal => {
           const savings = calculateSavings(deal.originalPrice, deal.salePrice);
@@ -79,7 +81,12 @@ const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote }) => {
               </div>
 
               <div className="deal-store">{deal.storeName}</div>
-              <div className="deal-location">{deal.location}</div>
+              <div className="deal-location">
+                {deal.location}
+                {deal.distance !== undefined && (
+                  <span className="deal-distance"> ({deal.distance.toFixed(1)} mi)</span>
+                )}
+              </div>
 
               <div className="deal-pricing">
                 {deal.originalPrice && (

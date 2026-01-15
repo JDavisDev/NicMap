@@ -79,6 +79,11 @@
   margin-bottom: 12px;
 }
 
+.deal-distance {
+  color: #4a90d9;
+  font-weight: 500;
+}
+
 .deal-pricing {
   display: flex;
   align-items: center;
