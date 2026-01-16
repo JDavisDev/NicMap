@@ -50,11 +50,29 @@
   margin-bottom: 8px;
 }
 
+.deal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
 .deal-product {
   font-size: 1.2rem;
   color: #333;
   margin: 0;
-  flex: 1;
+}
+
+.verified-badge {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .deal-savings {
@@ -149,4 +167,27 @@
 .upvote-count {
   font-weight: 600;
   color: #555;
+}
+
+.deal-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.report-btn {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #999;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.report-btn:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+  background: #fef5f5;
 }

@@ -25,10 +25,28 @@
   min-width: 200px;
 }
 
+.popup-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
 .popup-content h3 {
-  margin: 0 0 8px 0;
+  margin: 0;
   font-size: 1rem;
   color: #333;
+}
+
+.popup-verified {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .popup-store {
@@ -72,6 +90,12 @@
   font-weight: 600;
 }
 
+.popup-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .popup-upvote {
   background: #f5f5f5;
   border: none;
@@ -85,6 +109,23 @@
 
 .popup-upvote:hover {
   background: #e8f4fd;
+}
+
+.popup-report {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #999;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.popup-report:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+  background: #fef5f5;
 }
 
 /* Override Leaflet popup styles */

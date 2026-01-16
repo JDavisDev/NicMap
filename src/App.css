@@ -90,11 +90,20 @@ body {
   background: #f0f0f0;
 }
 
+/* Controls Row */
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0 0 0;
+  flex-wrap: wrap;
+}
+
 /* View Toggle */
 .view-toggle {
   display: flex;
   gap: 8px;
-  margin: 24px 0 0 0;
 }
 
 .toggle-btn {
@@ -119,6 +128,41 @@ body {
   color: white;
 }
 
+/* Sort Toggle */
+.sort-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.sort-btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid #ddd;
+  background: white;
+  color: #666;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sort-btn:hover {
+  border-color: #4a90d9;
+  color: #4a90d9;
+}
+
+.sort-btn.active {
+  background: #4a90d9;
+  color: white;
+  border-color: #4a90d9;
+}
+
 .app-main {
   flex: 1;
   max-width: 1200px;
@@ -131,12 +175,46 @@ body {
   background: #333;
   color: #999;
   text-align: center;
-  padding: 20px;
+  padding: 24px 20px;
   font-size: 0.85rem;
 }
 
-.app-footer p {
-  margin: 0;
+.app-footer > p {
+  margin: 0 0 16px 0;
+}
+
+.footer-resources {
+  border-top: 1px solid #444;
+  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.footer-resources p {
+  margin: 0 0 8px 0;
+  color: #ccc;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #4a90d9;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: #6ab0f9;
+  text-decoration: underline;
+}
+
+.footer-links .divider {
+  color: #555;
 }
 
 @media (max-width: 600px) {

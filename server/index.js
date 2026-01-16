@@ -12,6 +12,24 @@ app.use(express.json());
 let deals = [];
 let nextId = 1;
 
+// Deal expiration: 30 days in milliseconds
+const DEAL_EXPIRATION_MS = 30 * 24 * 60 * 60 * 1000;
+// Number of reports needed to kill a deal
+const REPORTS_TO_KILL = 2;
+
+function isExpired(deal) {
+  const createdAt = new Date(deal.createdAt).getTime();
+  return Date.now() - createdAt > DEAL_EXPIRATION_MS;
+}
+
+function isKilled(deal) {
+  return deal.reports >= REPORTS_TO_KILL;
+}
+
+function filterActiveDeals(dealsList) {
+  return dealsList.filter(deal => !isExpired(deal) && !isKilled(deal));
+}
+
 // Haversine formula to calculate distance between two points in miles
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 3959; // Earth's radius in miles
@@ -59,11 +77,12 @@ app.get('/api/geocode/:zipCode', async (req, res) => {
   res.json(geoData);
 });
 
-// GET all deals (with optional location filtering)
+// GET all deals (with optional location filtering and sorting)
 app.get('/api/deals', (req, res) => {
-  const { lat, lng, radius = 30 } = req.query;
+  const { lat, lng, radius = 30, sort = 'distance' } = req.query;
 
-  let filteredDeals = [...deals];
+  // Filter out expired and reported deals first
+  let filteredDeals = filterActiveDeals(deals);
 
   // If user location provided, filter by distance
   if (lat && lng) {
@@ -71,16 +90,21 @@ app.get('/api/deals', (req, res) => {
     const userLng = parseFloat(lng);
     const maxRadius = parseFloat(radius);
 
-    filteredDeals = deals
+    filteredDeals = filteredDeals
       .filter(deal => deal.latitude && deal.longitude)
       .map(deal => ({
         ...deal,
         distance: calculateDistance(userLat, userLng, deal.latitude, deal.longitude)
       }))
-      .filter(deal => deal.distance <= maxRadius)
-      .sort((a, b) => a.distance - b.distance); // Sort by closest first
+      .filter(deal => deal.distance <= maxRadius);
+  }
+
+  // Sort based on preference
+  if (sort === 'popular') {
+    filteredDeals = filteredDeals.sort((a, b) => b.upvotes - a.upvotes);
+  } else if (lat && lng) {
+    filteredDeals = filteredDeals.sort((a, b) => a.distance - b.distance);
   } else {
-    // No location provided, return all sorted by most recent
     filteredDeals = filteredDeals.sort((a, b) =>
       new Date(b.createdAt) - new Date(a.createdAt)
     );
@@ -92,7 +116,7 @@ app.get('/api/deals', (req, res) => {
 // GET single deal by ID
 app.get('/api/deals/:id', (req, res) => {
   const deal = deals.find(d => d.id === parseInt(req.params.id));
-  if (!deal) {
+  if (!deal || isExpired(deal) || isKilled(deal)) {
     return res.status(404).json({ error: 'Deal not found' });
   }
   res.json(deal);
@@ -117,6 +141,9 @@ app.post('/api/deals', async (req, res) => {
     });
   }
 
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + DEAL_EXPIRATION_MS);
+
   const newDeal = {
     id: nextId++,
     storeName,
@@ -128,8 +155,10 @@ app.post('/api/deals', async (req, res) => {
     latitude: geoData.latitude,
     longitude: geoData.longitude,
     description: description || '',
-    createdAt: new Date().toISOString(),
-    upvotes: 0
+    createdAt: now.toISOString(),
+    expiresAt: expiresAt.toISOString(),
+    upvotes: 0,
+    reports: 0
   };
 
   deals.push(newDeal);
@@ -154,6 +183,21 @@ app.patch('/api/deals/:id/upvote', (req, res) => {
   }
   deal.upvotes++;
   res.json(deal);
+});
+
+// PATCH report a deal as expired
+app.patch('/api/deals/:id/report', (req, res) => {
+  const deal = deals.find(d => d.id === parseInt(req.params.id));
+  if (!deal) {
+    return res.status(404).json({ error: 'Deal not found' });
+  }
+  deal.reports++;
+
+  if (deal.reports >= REPORTS_TO_KILL) {
+    res.json({ message: 'Deal has been removed due to reports', killed: true });
+  } else {
+    res.json({ message: 'Report submitted', reports: deal.reports, killed: false });
+  }
 });
 
 app.listen(PORT, () => {

@@ -19,9 +19,10 @@ interface DealListProps {
   deals: Deal[];
   loading: boolean;
   onUpvote: (id: number) => void;
+  onReport: (id: number) => void;
 }
 
-const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote }) => {
+const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote, onReport }) => {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -74,7 +75,12 @@ const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote }) => {
           return (
             <div key={deal.id} className="deal-card">
               <div className="deal-header">
-                <h3 className="deal-product">{deal.product}</h3>
+                <div className="deal-title-row">
+                  <h3 className="deal-product">{deal.product}</h3>
+                  {deal.upvotes >= 3 && (
+                    <span className="verified-badge" title="Verified by community">Verified</span>
+                  )}
+                </div>
                 {savings && (
                   <span className="deal-savings">{savings}% OFF</span>
                 )}
@@ -103,13 +109,22 @@ const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote }) => {
 
               <div className="deal-footer">
                 <span className="deal-date">{formatDate(deal.createdAt)}</span>
-                <button
-                  className="upvote-btn"
-                  onClick={() => onUpvote(deal.id)}
-                >
-                  <span className="upvote-icon">&#9650;</span>
-                  <span className="upvote-count">{deal.upvotes}</span>
-                </button>
+                <div className="deal-actions">
+                  <button
+                    className="report-btn"
+                    onClick={() => onReport(deal.id)}
+                    title="Report as expired"
+                  >
+                    Expired?
+                  </button>
+                  <button
+                    className="upvote-btn"
+                    onClick={() => onUpvote(deal.id)}
+                  >
+                    <span className="upvote-icon">&#9650;</span>
+                    <span className="upvote-count">{deal.upvotes}</span>
+                  </button>
+                </div>
               </div>
             </div>
           );

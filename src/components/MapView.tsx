@@ -31,9 +31,10 @@ interface MapViewProps {
   deals: Deal[];
   userLocation: { latitude: number; longitude: number } | null;
   onUpvote: (id: number) => void;
+  onReport: (id: number) => void;
 }
 
-const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote }) => {
+const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onReport }) => {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -79,7 +80,12 @@ const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote }) => {
           >
             <Popup className="deal-popup">
               <div className="popup-content">
-                <h3>{deal.product}</h3>
+                <div className="popup-title-row">
+                  <h3>{deal.product}</h3>
+                  {deal.upvotes >= 3 && (
+                    <span className="popup-verified">Verified</span>
+                  )}
+                </div>
                 <div className="popup-store">{deal.storeName}</div>
                 <div className="popup-location">
                   {deal.location}
@@ -96,9 +102,14 @@ const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote }) => {
                     </span>
                   )}
                 </div>
-                <button className="popup-upvote" onClick={() => onUpvote(deal.id)}>
-                  &#9650; {deal.upvotes}
-                </button>
+                <div className="popup-actions">
+                  <button className="popup-report" onClick={() => onReport(deal.id)}>
+                    Expired?
+                  </button>
+                  <button className="popup-upvote" onClick={() => onUpvote(deal.id)}>
+                    &#9650; {deal.upvotes}
+                  </button>
+                </div>
               </div>
             </Popup>
           </Marker>
