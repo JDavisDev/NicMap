@@ -36,6 +36,7 @@ function App() {
   const [zipInput, setZipInput] = useState('');
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [sortMode, setSortMode] = useState<'distance' | 'popular'>('distance');
+  const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [ageVerified, setAgeVerified] = useState(() => {
     return localStorage.getItem('nicmap_age_verified') === 'true';
   });
@@ -187,8 +188,6 @@ function App() {
         )}
       </header>
       <main className="app-main">
-        <DealForm onDealSubmitted={fetchDeals} />
-
         <div className="controls-row">
           <div className="view-toggle">
             <button
@@ -226,6 +225,22 @@ function App() {
         ) : (
           <MapView deals={deals} userLocation={userLocation} onUpvote={handleUpvote} onReport={handleReport} />
         )}
+
+        <div className="submit-section">
+          <button
+            className="submit-toggle-btn"
+            onClick={() => setShowSubmitForm(!showSubmitForm)}
+          >
+            {showSubmitForm ? 'Hide Form' : 'Submit a Deal'}
+            <span className={`toggle-arrow ${showSubmitForm ? 'open' : ''}`}>▼</span>
+          </button>
+          {showSubmitForm && (
+            <DealForm onDealSubmitted={() => {
+              fetchDeals();
+              setShowSubmitForm(false);
+            }} />
+          )}
+        </div>
       </main>
       <footer className="app-footer">
         <p>Share deals responsibly. Must be 21+ to purchase nicotine products.</p>

@@ -1,21 +1,23 @@
 .deal-form-container {
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 1px 3px var(--md-shadow);
+  border: 1px solid var(--md-outline);
   margin-bottom: 24px;
 }
 
 .deal-form-container h2 {
-  margin: 0 0 20px 0;
-  color: #333;
-  font-size: 1.5rem;
+  margin: 0 0 24px 0;
+  color: var(--md-on-surface);
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .deal-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .form-row {
@@ -33,70 +35,81 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .form-group label {
   font-weight: 500;
-  color: #555;
-  font-size: 0.9rem;
+  color: var(--md-on-surface-variant);
+  font-size: 0.875rem;
 }
 
 .form-group input,
 .form-group textarea {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--md-outline);
+  border-radius: 12px;
   font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
+  background: white;
+  color: var(--md-on-surface);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--md-on-surface-variant);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #4a90d9;
-  box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.1);
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 3px var(--md-primary-container);
 }
 
 .form-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 100px;
 }
 
 .submit-btn {
-  background: #4a90d9;
+  background: var(--md-primary);
   color: white;
   border: none;
-  padding: 14px 24px;
-  border-radius: 8px;
+  padding: 16px 28px;
+  border-radius: 100px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
   margin-top: 8px;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #3a7bc8;
+  background: var(--md-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--md-shadow-elevated);
 }
 
 .submit-btn:disabled {
-  background: #ccc;
+  background: var(--md-outline);
   cursor: not-allowed;
 }
 
 .form-error {
-  background: #fee;
-  color: #c00;
-  padding: 12px;
-  border-radius: 8px;
+  background: #FEF2F2;
+  color: var(--md-error);
+  padding: 14px 16px;
+  border-radius: 12px;
   font-size: 0.9rem;
+  border: 1px solid #FECACA;
 }
 
 .form-success {
-  background: #efe;
-  color: #060;
-  padding: 12px;
-  border-radius: 8px;
+  background: #ECFDF5;
+  color: #065F46;
+  padding: 14px 16px;
+  border-radius: 12px;
   font-size: 0.9rem;
+  border: 1px solid #A7F3D0;
 }
