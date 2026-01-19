@@ -22,4 +22,4 @@ services:
     staticPublishPath: build
     envVars:
       - key: REACT_APP_API_URL
-        value: https://nicmap-api.onrender.com
+        value: https://nicmap-1.onrender.com
