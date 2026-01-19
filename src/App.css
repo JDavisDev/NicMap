@@ -42,8 +42,16 @@ body {
   text-align: center;
 }
 
+.logo-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
 .app-header h1 {
-  margin: 0 0 8px 0;
+  margin: 0;
   font-size: 2.25rem;
   font-weight: 600;
   letter-spacing: -0.5px;
@@ -54,6 +62,33 @@ body {
   opacity: 0.9;
   font-size: 1rem;
   font-weight: 400;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.share-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.share-btn svg {
+  flex-shrink: 0;
 }
 
 .location-status {

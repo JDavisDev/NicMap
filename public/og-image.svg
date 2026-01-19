@@ -1,0 +1,28 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0891B2"/>
+      <stop offset="100%" style="stop-color:#0E7490"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Logo pin -->
+  <g transform="translate(440, 120)">
+    <path d="M160 20C107.533 20 65 62.533 65 115c0 70 95 175 95 175s95-105 95-175c0-52.467-42.533-95-95-95z" fill="white" fill-opacity="0.95"/>
+    <circle cx="160" cy="115" r="55" fill="#0891B2"/>
+    <circle cx="142" cy="97" r="14" fill="white"/>
+    <circle cx="178" cy="133" r="14" fill="white"/>
+    <rect x="133" y="110" width="55" height="12" rx="6" transform="rotate(-45 133 110)" fill="white"/>
+  </g>
+
+  <!-- Title -->
+  <text x="600" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="600" fill="white" text-anchor="middle">NicMap</text>
+
+  <!-- Tagline -->
+  <text x="600" y="490" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="white" fill-opacity="0.9" text-anchor="middle">Find Nicotine Deals Near You</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="white" fill-opacity="0.7" text-anchor="middle">Community-verified savings within 30 miles</text>
+</svg>

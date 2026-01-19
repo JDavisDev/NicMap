@@ -3,6 +3,7 @@ import DealForm from './components/DealForm';
 import DealList from './components/DealList';
 import MapView from './components/MapView';
 import AgeVerification from './components/AgeVerification';
+import Logo from './components/Logo';
 import './App.css';
 
 const API_URL = process.env.REACT_APP_API_URL || '';
@@ -46,6 +47,26 @@ function App() {
     const stored = localStorage.getItem('nicmap_upvoted_deals');
     return stored ? new Set(JSON.parse(stored)) : new Set();
   });
+
+  const handleShare = async () => {
+    const shareData = {
+      title: 'NicMap - Find Nicotine Deals Near You',
+      text: 'Check out NicMap to find and share nicotine product deals in your area!',
+      url: window.location.href
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Link copied to clipboard!');
+      }
+    } catch (error) {
+      // User cancelled or error occurred
+      console.log('Share cancelled or failed');
+    }
+  };
 
   // Get user location from browser or zip code
   const getUserLocation = useCallback(() => {
@@ -172,8 +193,21 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>NicMap</h1>
+        <div className="logo-title">
+          <Logo size={52} />
+          <h1>NicMap</h1>
+        </div>
         <p>Find and share nicotine deals in your area</p>
+        <button className="share-btn" onClick={handleShare}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Share NicMap
+        </button>
         {locationStatus === 'pending' && (
           <div className="location-status">Checking your location...</div>
         )}
