@@ -5,6 +5,8 @@ import MapView from './components/MapView';
 import AgeVerification from './components/AgeVerification';
 import './App.css';
 
+const API_URL = process.env.REACT_APP_API_URL || '';
+
 interface Deal {
   id: number;
   storeName: string;
@@ -68,7 +70,7 @@ function App() {
     if (!zipInput.match(/^\d{5}$/)) return;
 
     try {
-      const response = await fetch(`/api/geocode/${zipInput}`);
+      const response = await fetch(`${API_URL}/api/geocode/${zipInput}`);
       if (response.ok) {
         const data = await response.json();
         setUserLocation({
@@ -93,7 +95,7 @@ function App() {
         params.set('radius', '30');
       }
       params.set('sort', sortMode);
-      const url = `/api/deals?${params.toString()}`;
+      const url = `${API_URL}/api/deals?${params.toString()}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error('Failed to fetch deals');
       const data = await response.json();
@@ -117,7 +119,7 @@ function App() {
 
   const handleUpvote = async (id: number) => {
     try {
-      const response = await fetch(`/api/deals/${id}/upvote`, {
+      const response = await fetch(`${API_URL}/api/deals/${id}/upvote`, {
         method: 'PATCH'
       });
       if (!response.ok) throw new Error('Failed to upvote');
@@ -135,7 +137,7 @@ function App() {
       return;
     }
     try {
-      const response = await fetch(`/api/deals/${id}/report`, {
+      const response = await fetch(`${API_URL}/api/deals/${id}/report`, {
         method: 'PATCH'
       });
       if (!response.ok) throw new Error('Failed to report');

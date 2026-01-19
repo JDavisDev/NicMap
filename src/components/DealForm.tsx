@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './DealForm.css';
 
+const API_URL = process.env.REACT_APP_API_URL || '';
+
 // On! product catalog
 const ON_FLAVORS = ['Wintergreen', 'Mint', 'Coffee', 'Cinnamon', 'Citrus', 'Berry', 'Original'];
 const ON_STRENGTHS = ['2mg', '4mg', '8mg'];
@@ -40,7 +42,7 @@ const DealForm: React.FC<DealFormProps> = ({ onDealSubmitted }) => {
     setError(null);
 
     try {
-      const response = await fetch('/api/deals', {
+      const response = await fetch(`${API_URL}/api/deals`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
