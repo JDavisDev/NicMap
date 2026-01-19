@@ -134,9 +134,10 @@ function App() {
         prev.map(deal => (deal.id === id ? updatedDeal : deal))
       );
 
-      const newUpvoted = new Set(upvotedDeals).add(id);
+      const newUpvoted = new Set(Array.from(upvotedDeals));
+      newUpvoted.add(id);
       setUpvotedDeals(newUpvoted);
-      localStorage.setItem('nicmap_upvoted_deals', JSON.stringify([...newUpvoted]));
+      localStorage.setItem('nicmap_upvoted_deals', JSON.stringify(Array.from(newUpvoted)));
     } catch (error) {
       console.error('Error upvoting deal:', error);
     }
