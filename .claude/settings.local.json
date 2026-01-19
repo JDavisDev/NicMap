@@ -11,7 +11,10 @@
       "Bash(curl:*)",
       "Bash(npm install:*)",
       "Bash(npm run build:*)",
-      "Bash(xargs kill -9)"
+      "Bash(xargs kill -9)",
+      "Bash(git -C /Users/jordan/NicMap/nicmap log --oneline -10)",
+      "Bash(timeout 5 node:*)",
+      "Bash(git rm:*)"
     ]
   }
 }

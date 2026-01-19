@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: nicmap
+    runtime: node
+    buildCommand: npm install && npm run build && cd server && npm install
+    startCommand: cd server && node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+    disk:
+      name: nicmap-data
+      mountPath: /data
+      sizeGB: 1

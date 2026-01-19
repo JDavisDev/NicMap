@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const db = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -7,10 +8,6 @@ const PORT = process.env.PORT || 5001;
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// In-memory data store (replace with database later)
-let deals = [];
-let nextId = 1;
 
 // Deal expiration: 30 days in milliseconds
 const DEAL_EXPIRATION_MS = 30 * 24 * 60 * 60 * 1000;
@@ -26,8 +23,13 @@ function isKilled(deal) {
   return deal.reports >= REPORTS_TO_KILL;
 }
 
-function filterActiveDeals(dealsList) {
-  return dealsList.filter(deal => !isExpired(deal) && !isKilled(deal));
+function getActiveDeals() {
+  const now = new Date().toISOString();
+  const expirationThreshold = new Date(Date.now() - DEAL_EXPIRATION_MS).toISOString();
+  return db.prepare(`
+    SELECT * FROM deals
+    WHERE createdAt > ? AND reports < ?
+  `).all(expirationThreshold, REPORTS_TO_KILL);
 }
 
 // Haversine formula to calculate distance between two points in miles
@@ -82,7 +84,7 @@ app.get('/api/deals', (req, res) => {
   const { lat, lng, radius = 30, sort = 'distance' } = req.query;
 
   // Filter out expired and reported deals first
-  let filteredDeals = filterActiveDeals(deals);
+  let filteredDeals = getActiveDeals();
 
   // If user location provided, filter by distance
   if (lat && lng) {
@@ -115,7 +117,7 @@ app.get('/api/deals', (req, res) => {
 
 // GET single deal by ID
 app.get('/api/deals/:id', (req, res) => {
-  const deal = deals.find(d => d.id === parseInt(req.params.id));
+  const deal = db.prepare('SELECT * FROM deals WHERE id = ?').get(parseInt(req.params.id));
   if (!deal || isExpired(deal) || isKilled(deal)) {
     return res.status(404).json({ error: 'Deal not found' });
   }
@@ -144,54 +146,57 @@ app.post('/api/deals', async (req, res) => {
   const now = new Date();
   const expiresAt = new Date(now.getTime() + DEAL_EXPIRATION_MS);
 
-  const newDeal = {
-    id: nextId++,
+  const stmt = db.prepare(`
+    INSERT INTO deals (storeName, product, originalPrice, salePrice, location, zipCode, latitude, longitude, description, createdAt, expiresAt, upvotes, reports)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)
+  `);
+
+  const result = stmt.run(
     storeName,
     product,
-    originalPrice: originalPrice ? parseFloat(originalPrice) : null,
-    salePrice: parseFloat(salePrice),
-    location: location || `${geoData.city}, ${geoData.state}`,
+    originalPrice ? parseFloat(originalPrice) : null,
+    parseFloat(salePrice),
+    location || `${geoData.city}, ${geoData.state}`,
     zipCode,
-    latitude: geoData.latitude,
-    longitude: geoData.longitude,
-    description: description || '',
-    createdAt: now.toISOString(),
-    expiresAt: expiresAt.toISOString(),
-    upvotes: 0,
-    reports: 0
-  };
+    geoData.latitude,
+    geoData.longitude,
+    description || '',
+    now.toISOString(),
+    expiresAt.toISOString()
+  );
 
-  deals.push(newDeal);
+  const newDeal = db.prepare('SELECT * FROM deals WHERE id = ?').get(result.lastInsertRowid);
   res.status(201).json(newDeal);
 });
 
 // DELETE a deal
 app.delete('/api/deals/:id', (req, res) => {
-  const index = deals.findIndex(d => d.id === parseInt(req.params.id));
-  if (index === -1) {
+  const result = db.prepare('DELETE FROM deals WHERE id = ?').run(parseInt(req.params.id));
+  if (result.changes === 0) {
     return res.status(404).json({ error: 'Deal not found' });
   }
-  deals.splice(index, 1);
   res.status(204).send();
 });
 
 // PATCH upvote a deal
 app.patch('/api/deals/:id/upvote', (req, res) => {
-  const deal = deals.find(d => d.id === parseInt(req.params.id));
-  if (!deal) {
+  const id = parseInt(req.params.id);
+  const result = db.prepare('UPDATE deals SET upvotes = upvotes + 1 WHERE id = ?').run(id);
+  if (result.changes === 0) {
     return res.status(404).json({ error: 'Deal not found' });
   }
-  deal.upvotes++;
+  const deal = db.prepare('SELECT * FROM deals WHERE id = ?').get(id);
   res.json(deal);
 });
 
 // PATCH report a deal as expired
 app.patch('/api/deals/:id/report', (req, res) => {
-  const deal = deals.find(d => d.id === parseInt(req.params.id));
-  if (!deal) {
+  const id = parseInt(req.params.id);
+  const result = db.prepare('UPDATE deals SET reports = reports + 1 WHERE id = ?').run(id);
+  if (result.changes === 0) {
     return res.status(404).json({ error: 'Deal not found' });
   }
-  deal.reports++;
+  const deal = db.prepare('SELECT * FROM deals WHERE id = ?').get(id);
 
   if (deal.reports >= REPORTS_TO_KILL) {
     res.json({ message: 'Deal has been removed due to reports', killed: true });
@@ -199,6 +204,15 @@ app.patch('/api/deals/:id/report', (req, res) => {
     res.json({ message: 'Report submitted', reports: deal.reports, killed: false });
   }
 });
+
+// Serve React build in production
+if (process.env.NODE_ENV === 'production') {
+  const path = require('path');
+  app.use(express.static(path.join(__dirname, '../build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build', 'index.html'));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`NicMap server running on port ${PORT}`);
