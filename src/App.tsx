@@ -42,6 +42,10 @@ function App() {
   const [ageVerified, setAgeVerified] = useState(() => {
     return localStorage.getItem('nicmap_age_verified') === 'true';
   });
+  const [upvotedDeals, setUpvotedDeals] = useState<Set<number>>(() => {
+    const stored = localStorage.getItem('nicmap_upvoted_deals');
+    return stored ? new Set(JSON.parse(stored)) : new Set();
+  });
 
   // Get user location from browser or zip code
   const getUserLocation = useCallback(() => {
@@ -118,6 +122,8 @@ function App() {
   }, [fetchDeals, locationStatus, userLocation]);
 
   const handleUpvote = async (id: number) => {
+    if (upvotedDeals.has(id)) return;
+
     try {
       const response = await fetch(`${API_URL}/api/deals/${id}/upvote`, {
         method: 'PATCH'
@@ -127,6 +133,10 @@ function App() {
       setDeals(prev =>
         prev.map(deal => (deal.id === id ? updatedDeal : deal))
       );
+
+      const newUpvoted = new Set(upvotedDeals).add(id);
+      setUpvotedDeals(newUpvoted);
+      localStorage.setItem('nicmap_upvoted_deals', JSON.stringify([...newUpvoted]));
     } catch (error) {
       console.error('Error upvoting deal:', error);
     }
@@ -179,13 +189,29 @@ function App() {
                 pattern="\d{5}"
               />
               <button type="submit">Find Deals</button>
+              <button
+                type="button"
+                className="add-deal-header-btn"
+                onClick={() => setShowSubmitForm(!showSubmitForm)}
+              >
+                + Add Deal
+              </button>
             </div>
           </form>
         )}
         {userLocation && (
-          <div className="location-status location-active">
-            Showing deals within 30 miles
-            {userLocation.city && ` of ${userLocation.city}, ${userLocation.state}`}
+          <div className="location-header-row">
+            <div className="location-status location-active">
+              Showing deals within 30 miles
+              {userLocation.city && ` of ${userLocation.city}, ${userLocation.state}`}
+            </div>
+            <button
+              type="button"
+              className="add-deal-header-btn"
+              onClick={() => setShowSubmitForm(!showSubmitForm)}
+            >
+              + Add Deal
+            </button>
           </div>
         )}
       </header>
@@ -220,12 +246,6 @@ function App() {
               Popular
             </button>
           </div>
-          <button
-            className="new-deal-btn"
-            onClick={() => setShowSubmitForm(!showSubmitForm)}
-          >
-            Add Deal
-          </button>
         </div>
 
         {showSubmitForm && (
@@ -236,9 +256,9 @@ function App() {
         )}
 
         {viewMode === 'list' ? (
-          <DealList deals={deals} loading={loading} onUpvote={handleUpvote} onReport={handleReport} />
+          <DealList deals={deals} loading={loading} onUpvote={handleUpvote} onReport={handleReport} upvotedDeals={upvotedDeals} />
         ) : (
-          <MapView deals={deals} userLocation={userLocation} onUpvote={handleUpvote} onReport={handleReport} />
+          <MapView deals={deals} userLocation={userLocation} onUpvote={handleUpvote} onReport={handleReport} upvotedDeals={upvotedDeals} />
         )}
 
       </main>

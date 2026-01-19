@@ -119,6 +119,16 @@
   background: var(--md-primary-container);
 }
 
+.popup-upvote.upvoted {
+  background: var(--md-primary);
+  color: white;
+  cursor: default;
+}
+
+.popup-upvote.upvoted:hover {
+  background: var(--md-primary);
+}
+
 .popup-report {
   background: transparent;
   border: 1.5px solid var(--md-outline);

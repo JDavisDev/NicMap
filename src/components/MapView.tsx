@@ -32,9 +32,10 @@ interface MapViewProps {
   userLocation: { latitude: number; longitude: number } | null;
   onUpvote: (id: number) => void;
   onReport: (id: number) => void;
+  upvotedDeals: Set<number>;
 }
 
-const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onReport }) => {
+const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onReport, upvotedDeals }) => {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -106,7 +107,11 @@ const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onRepo
                   <button className="popup-report" onClick={() => onReport(deal.id)}>
                     Expired?
                   </button>
-                  <button className="popup-upvote" onClick={() => onUpvote(deal.id)}>
+                  <button
+                    className={`popup-upvote ${upvotedDeals.has(deal.id) ? 'upvoted' : ''}`}
+                    onClick={() => onUpvote(deal.id)}
+                    disabled={upvotedDeals.has(deal.id)}
+                  >
                     &#9650; {deal.upvotes}
                   </button>
                 </div>

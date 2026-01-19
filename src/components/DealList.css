@@ -204,3 +204,17 @@
   color: var(--md-on-surface);
   font-size: 0.875rem;
 }
+
+.upvote-btn.upvoted {
+  background: var(--md-primary);
+  cursor: default;
+}
+
+.upvote-btn.upvoted:hover {
+  background: var(--md-primary);
+}
+
+.upvote-btn.upvoted .upvote-icon,
+.upvote-btn.upvoted .upvote-count {
+  color: white;
+}

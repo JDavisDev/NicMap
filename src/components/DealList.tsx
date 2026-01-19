@@ -20,9 +20,10 @@ interface DealListProps {
   loading: boolean;
   onUpvote: (id: number) => void;
   onReport: (id: number) => void;
+  upvotedDeals: Set<number>;
 }
 
-const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote, onReport }) => {
+const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote, onReport, upvotedDeals }) => {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -118,8 +119,9 @@ const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote, onReport 
                     Expired?
                   </button>
                   <button
-                    className="upvote-btn"
+                    className={`upvote-btn ${upvotedDeals.has(deal.id) ? 'upvoted' : ''}`}
                     onClick={() => onUpvote(deal.id)}
+                    disabled={upvotedDeals.has(deal.id)}
                   >
                     <span className="upvote-icon">&#9650;</span>
                     <span className="upvote-count">{deal.upvotes}</span>
