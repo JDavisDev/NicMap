@@ -1,5 +1,5 @@
-import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import React, { useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MapView.css';
@@ -35,6 +35,17 @@ interface MapViewProps {
   upvotedDeals: Set<number>;
 }
 
+// Component to handle dynamic map view updates
+const MapController: React.FC<{ center: [number, number]; zoom: number }> = ({ center, zoom }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    map.setView(center, zoom);
+  }, [map, center, zoom]);
+
+  return null;
+};
+
 const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onReport, upvotedDeals }) => {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -53,7 +64,8 @@ const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onRepo
     ? [userLocation.latitude, userLocation.longitude]
     : [39.8283, -98.5795];
 
-  const zoom = userLocation ? 10 : 4;
+  // Zoom 13 shows roughly 5-10 square miles - good for local deals
+  const zoom = userLocation ? 13 : 4;
 
   const dealsWithCoords = deals.filter(d => d.latitude && d.longitude);
 
@@ -70,6 +82,7 @@ const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onRepo
   return (
     <div className="map-container">
       <MapContainer center={center} zoom={zoom} className="deal-map">
+        <MapController center={center} zoom={zoom} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
