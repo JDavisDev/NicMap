@@ -2,11 +2,13 @@ services:
   - type: web
     name: nicmap
     runtime: node
-    buildCommand: npm install && npm run build && cd server && npm install
+    buildCommand: npm ci && npm run build && cd server && npm ci
     startCommand: cd server && node index.js
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NPM_CONFIG_PRODUCTION
+        value: false
     disk:
       name: nicmap-data
       mountPath: /data
