@@ -220,7 +220,20 @@ function App() {
               Popular
             </button>
           </div>
+          <button
+            className="new-deal-btn"
+            onClick={() => setShowSubmitForm(!showSubmitForm)}
+          >
+            Add Deal
+          </button>
         </div>
+
+        {showSubmitForm && (
+          <DealForm onDealSubmitted={() => {
+            fetchDeals();
+            setShowSubmitForm(false);
+          }} />
+        )}
 
         {viewMode === 'list' ? (
           <DealList deals={deals} loading={loading} onUpvote={handleUpvote} onReport={handleReport} />
@@ -228,21 +241,6 @@ function App() {
           <MapView deals={deals} userLocation={userLocation} onUpvote={handleUpvote} onReport={handleReport} />
         )}
 
-        <div className="submit-section">
-          <button
-            className="submit-toggle-btn"
-            onClick={() => setShowSubmitForm(!showSubmitForm)}
-          >
-            {showSubmitForm ? 'Hide Form' : 'Submit a Deal'}
-            <span className={`toggle-arrow ${showSubmitForm ? 'open' : ''}`}>▼</span>
-          </button>
-          {showSubmitForm && (
-            <DealForm onDealSubmitted={() => {
-              fetchDeals();
-              setShowSubmitForm(false);
-            }} />
-          )}
-        </div>
       </main>
       <footer className="app-footer">
         <p>Share deals responsibly. Must be 21+ to purchase nicotine products.</p>
