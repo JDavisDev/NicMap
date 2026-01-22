@@ -64,8 +64,8 @@ const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onRepo
     ? [userLocation.latitude, userLocation.longitude]
     : [39.8283, -98.5795];
 
-  // Zoom 13 shows roughly 5-10 square miles - good for local deals
-  const zoom = userLocation ? 13 : 4;
+  // Zoom 12 shows roughly a 5 mile radius - good for local deals
+  const zoom = userLocation ? 12 : 4;
 
   const dealsWithCoords = deals.filter(d => d.latitude && d.longitude);
 

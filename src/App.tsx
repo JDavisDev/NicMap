@@ -37,7 +37,7 @@ function App() {
   const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
   const [locationStatus, setLocationStatus] = useState<'pending' | 'granted' | 'denied' | 'zip'>('pending');
   const [zipInput, setZipInput] = useState('');
-  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('map');
   const [sortMode, setSortMode] = useState<'distance' | 'popular'>('distance');
   const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [ageVerified, setAgeVerified] = useState(() => {
