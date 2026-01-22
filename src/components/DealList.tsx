@@ -90,7 +90,7 @@ const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote, onReport,
               <div className="deal-store">{deal.storeName}</div>
               <div className="deal-location">
                 <a
-                  href={`https://maps.google.com/maps?q=${deal.latitude},${deal.longitude}`}
+                  href={`https://maps.google.com/maps?q=${encodeURIComponent(deal.location)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="location-link"
