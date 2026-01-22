@@ -5,6 +5,32 @@
   overflow: hidden;
   box-shadow: 0 1px 3px var(--md-shadow);
   border: 1px solid var(--md-outline);
+  position: relative;
+}
+
+.search-area-btn {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--md-primary);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.search-area-btn:hover {
+  background: var(--md-primary);
+  color: white;
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 6px 16px rgba(8, 145, 178, 0.3);
 }
 
 .deal-map {
@@ -63,6 +89,17 @@
   color: var(--md-on-surface-variant);
   font-size: 0.8rem;
   margin-bottom: 12px;
+}
+
+.popup-location .location-link {
+  color: var(--md-primary);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--md-primary);
+  transition: all 0.2s ease;
+}
+
+.popup-location .location-link:hover {
+  border-bottom-style: solid;
 }
 
 .popup-pricing {

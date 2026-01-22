@@ -104,6 +104,17 @@
   margin-bottom: 16px;
 }
 
+.location-link {
+  color: var(--md-primary);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--md-primary);
+  transition: all 0.2s ease;
+}
+
+.location-link:hover {
+  border-bottom-style: solid;
+}
+
 .deal-distance {
   color: var(--md-primary);
   font-weight: 500;

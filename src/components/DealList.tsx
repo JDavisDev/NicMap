@@ -89,7 +89,14 @@ const DealList: React.FC<DealListProps> = ({ deals, loading, onUpvote, onReport,
 
               <div className="deal-store">{deal.storeName}</div>
               <div className="deal-location">
-                {deal.location}
+                <a
+                  href={`https://maps.google.com/maps?q=${deal.latitude},${deal.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="location-link"
+                >
+                  {deal.location}
+                </a>
                 {deal.distance !== undefined && (
                   <span className="deal-distance"> ({deal.distance.toFixed(1)} mi)</span>
                 )}

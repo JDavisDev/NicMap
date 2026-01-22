@@ -5,11 +5,8 @@ const API_URL = process.env.REACT_APP_API_URL || '';
 
 // On! product catalog
 const ON_FLAVORS = ['Wintergreen', 'Mint', 'Coffee', 'Cinnamon', 'Citrus', 'Berry', 'Original'];
-const ON_STRENGTHS = ['2mg', '4mg', '8mg'];
 
-const PRODUCTS = ON_FLAVORS.flatMap(flavor =>
-  ON_STRENGTHS.map(strength => `On! ${flavor} ${strength}`)
-);
+const PRODUCTS = ON_FLAVORS.map(flavor => `On! ${flavor}`);
 
 interface DealFormProps {
   onDealSubmitted: () => void;

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import React, { useEffect, useState, useCallback } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MapView.css';
@@ -33,6 +33,7 @@ interface MapViewProps {
   onUpvote: (id: number) => void;
   onReport: (id: number) => void;
   upvotedDeals: Set<number>;
+  onSearchArea?: (lat: number, lng: number) => void;
 }
 
 // Component to handle dynamic map view updates
@@ -46,7 +47,32 @@ const MapController: React.FC<{ center: [number, number]; zoom: number }> = ({ c
   return null;
 };
 
-const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onReport, upvotedDeals }) => {
+// Component to detect map movement
+const MapMoveDetector: React.FC<{
+  onMapMoved: (lat: number, lng: number) => void;
+  initialCenter: [number, number];
+}> = ({ onMapMoved, initialCenter }) => {
+  useMapEvents({
+    moveend: (e) => {
+      const map = e.target;
+      const center = map.getCenter();
+      const distance = Math.sqrt(
+        Math.pow(center.lat - initialCenter[0], 2) +
+        Math.pow(center.lng - initialCenter[1], 2)
+      );
+      // Only trigger if moved significantly (roughly 0.01 degrees ~ 0.7 miles)
+      if (distance > 0.01) {
+        onMapMoved(center.lat, center.lng);
+      }
+    }
+  });
+  return null;
+};
+
+const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onReport, upvotedDeals, onSearchArea }) => {
+  const [showSearchButton, setShowSearchButton] = useState(false);
+  const [pendingSearch, setPendingSearch] = useState<{ lat: number; lng: number } | null>(null);
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -69,6 +95,19 @@ const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onRepo
 
   const dealsWithCoords = deals.filter(d => d.latitude && d.longitude);
 
+  const handleMapMoved = useCallback((lat: number, lng: number) => {
+    setPendingSearch({ lat, lng });
+    setShowSearchButton(true);
+  }, []);
+
+  const handleSearchArea = () => {
+    if (pendingSearch && onSearchArea) {
+      onSearchArea(pendingSearch.lat, pendingSearch.lng);
+      setShowSearchButton(false);
+      setPendingSearch(null);
+    }
+  };
+
   if (dealsWithCoords.length === 0 && !userLocation) {
     return (
       <div className="map-container">
@@ -81,8 +120,14 @@ const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onRepo
 
   return (
     <div className="map-container">
+      {showSearchButton && (
+        <button className="search-area-btn" onClick={handleSearchArea}>
+          Search this area
+        </button>
+      )}
       <MapContainer center={center} zoom={zoom} className="deal-map">
         <MapController center={center} zoom={zoom} />
+        <MapMoveDetector onMapMoved={handleMapMoved} initialCenter={center} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -102,7 +147,14 @@ const MapView: React.FC<MapViewProps> = ({ deals, userLocation, onUpvote, onRepo
                 </div>
                 <div className="popup-store">{deal.storeName}</div>
                 <div className="popup-location">
-                  {deal.location}
+                  <a
+                    href={`https://maps.google.com/maps?q=${deal.latitude},${deal.longitude}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="location-link"
+                  >
+                    {deal.location}
+                  </a>
                   {deal.distance !== undefined && ` (${deal.distance.toFixed(1)} mi)`}
                 </div>
                 <div className="popup-pricing">

@@ -186,6 +186,26 @@ function App() {
     }
   };
 
+  const handleSearchArea = async (lat: number, lng: number) => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      params.set('lat', lat.toString());
+      params.set('lng', lng.toString());
+      params.set('radius', '30');
+      params.set('sort', sortMode);
+      const url = `${API_URL}/api/deals?${params.toString()}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch deals');
+      const data = await response.json();
+      setDeals(data);
+    } catch (error) {
+      console.error('Error fetching deals:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!ageVerified) {
     return <AgeVerification onVerified={() => setAgeVerified(true)} />;
   }
@@ -299,7 +319,7 @@ function App() {
             {viewMode === 'list' ? (
               <DealList deals={deals} loading={loading} onUpvote={handleUpvote} onReport={handleReport} upvotedDeals={upvotedDeals} />
             ) : (
-              <MapView deals={deals} userLocation={userLocation} onUpvote={handleUpvote} onReport={handleReport} upvotedDeals={upvotedDeals} />
+              <MapView deals={deals} userLocation={userLocation} onUpvote={handleUpvote} onReport={handleReport} upvotedDeals={upvotedDeals} onSearchArea={handleSearchArea} />
             )}
           </>
         )}
