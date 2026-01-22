@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -36,12 +36,21 @@ interface MapViewProps {
   onSearchArea?: (lat: number, lng: number) => void;
 }
 
-// Component to handle dynamic map view updates
+// Component to handle dynamic map view updates - only on initial mount or when center actually changes
 const MapController: React.FC<{ center: [number, number]; zoom: number }> = ({ center, zoom }) => {
   const map = useMap();
+  const prevCenter = useRef<[number, number] | null>(null);
 
   useEffect(() => {
-    map.setView(center, zoom);
+    // Only set view if this is the first render or if center coordinates actually changed
+    if (
+      prevCenter.current === null ||
+      prevCenter.current[0] !== center[0] ||
+      prevCenter.current[1] !== center[1]
+    ) {
+      map.setView(center, zoom);
+      prevCenter.current = center;
+    }
   }, [map, center, zoom]);
 
   return null;
