@@ -267,6 +267,23 @@ body {
   padding: 24px 20px;
 }
 
+.no-location-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  background: var(--md-surface-variant);
+  border-radius: 16px;
+  margin-top: 24px;
+}
+
+.no-location-message p {
+  color: var(--md-on-surface-variant);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
 /* Submit Section */
 .submit-section {
   margin-top: 24px;

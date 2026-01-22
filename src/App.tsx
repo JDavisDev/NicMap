@@ -251,51 +251,58 @@ function App() {
         )}
       </header>
       <main className="app-main">
-        <div className="controls-row">
-          <div className="view-toggle">
-            <button
-              className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
-              onClick={() => setViewMode('list')}
-            >
-              List View
-            </button>
-            <button
-              className={`toggle-btn ${viewMode === 'map' ? 'active' : ''}`}
-              onClick={() => setViewMode('map')}
-            >
-              Map View
-            </button>
+        {!userLocation ? (
+          <div className="no-location-message">
+            <p>Add your zip code above to see deals</p>
           </div>
-          <div className="sort-toggle">
-            <span className="sort-label">Sort:</span>
-            <button
-              className={`sort-btn ${sortMode === 'distance' ? 'active' : ''}`}
-              onClick={() => setSortMode('distance')}
-            >
-              Nearest
-            </button>
-            <button
-              className={`sort-btn ${sortMode === 'popular' ? 'active' : ''}`}
-              onClick={() => setSortMode('popular')}
-            >
-              Popular
-            </button>
-          </div>
-        </div>
-
-        {showSubmitForm && (
-          <DealForm onDealSubmitted={() => {
-            fetchDeals();
-            setShowSubmitForm(false);
-          }} />
-        )}
-
-        {viewMode === 'list' ? (
-          <DealList deals={deals} loading={loading} onUpvote={handleUpvote} onReport={handleReport} upvotedDeals={upvotedDeals} />
         ) : (
-          <MapView deals={deals} userLocation={userLocation} onUpvote={handleUpvote} onReport={handleReport} upvotedDeals={upvotedDeals} />
-        )}
+          <>
+            <div className="controls-row">
+              <div className="view-toggle">
+                <button
+                  className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+                  onClick={() => setViewMode('list')}
+                >
+                  List View
+                </button>
+                <button
+                  className={`toggle-btn ${viewMode === 'map' ? 'active' : ''}`}
+                  onClick={() => setViewMode('map')}
+                >
+                  Map View
+                </button>
+              </div>
+              <div className="sort-toggle">
+                <span className="sort-label">Sort:</span>
+                <button
+                  className={`sort-btn ${sortMode === 'distance' ? 'active' : ''}`}
+                  onClick={() => setSortMode('distance')}
+                >
+                  Nearest
+                </button>
+                <button
+                  className={`sort-btn ${sortMode === 'popular' ? 'active' : ''}`}
+                  onClick={() => setSortMode('popular')}
+                >
+                  Popular
+                </button>
+              </div>
+            </div>
 
+            {showSubmitForm && (
+              <DealForm onDealSubmitted={() => {
+                fetchDeals();
+                setShowSubmitForm(false);
+              }} />
+            )}
+
+            {viewMode === 'list' ? (
+              <DealList deals={deals} loading={loading} onUpvote={handleUpvote} onReport={handleReport} upvotedDeals={upvotedDeals} />
+            ) : (
+              <MapView deals={deals} userLocation={userLocation} onUpvote={handleUpvote} onReport={handleReport} upvotedDeals={upvotedDeals} />
+            )}
+          </>
+        )}
       </main>
       <footer className="app-footer">
         <p>Share deals responsibly. Must be 21+ to purchase nicotine products.</p>
