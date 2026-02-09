@@ -5,6 +5,7 @@ import MapView from './components/MapView';
 import AgeVerification from './components/AgeVerification';
 import Logo from './components/Logo';
 import headerBg from './assets/header-bg.svg';
+import heroImg from './assets/hero-illustration.svg';
 import './App.css';
 
 const API_URL = process.env.REACT_APP_API_URL || '';
@@ -51,8 +52,8 @@ function App() {
 
   const handleShare = async () => {
     const shareData = {
-      title: 'NicMap - Find Nicotine Deals Near You',
-      text: 'Check out NicMap to find and share nicotine product deals in your area!',
+      title: 'NicBuddy - Find Nicotine Deals Near You',
+      text: 'Check out NicBuddy to find and share nicotine product deals in your area!',
       url: window.location.href
     };
 
@@ -215,23 +216,32 @@ function App() {
     <div className="app">
       <header className="app-header">
         <img src={headerBg} alt="" className="header-bg-img" aria-hidden="true" />
-        <div className="logo-title">
-          <Logo size={56} />
-          <div>
-            <h1>NicMap</h1>
-            <p>Find and share nicotine deals in your area</p>
+        <div className="header-top-bar">
+          <button className="share-btn" onClick={handleShare}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+            Share
+          </button>
+        </div>
+        <div className="header-hero">
+          <img
+            src={heroImg}
+            alt="NicBuddy - Deal finder"
+            className="header-hero-img"
+          />
+          <div className="header-hero-text">
+            <div className="logo-title">
+              <Logo size={48} />
+              <h1>NicBuddy</h1>
+            </div>
+            <p className="header-tagline">Find and share nicotine deals in your area</p>
           </div>
         </div>
-        <button className="share-btn" onClick={handleShare}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="18" cy="5" r="3"/>
-            <circle cx="6" cy="12" r="3"/>
-            <circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-          </svg>
-          Share NicMap
-        </button>
         {locationStatus === 'pending' && (
           <div className="location-status">Checking your location...</div>
         )}

@@ -1,0 +1,64 @@
+<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hero-bg" x1="0" y1="0" x2="240" y2="240">
+      <stop offset="0%" stop-color="#BE5C32"/>
+      <stop offset="100%" stop-color="#A04D28"/>
+    </linearGradient>
+    <linearGradient id="pin-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F0E6DE"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <rect width="240" height="240" rx="48" fill="url(#hero-bg)"/>
+
+  <!-- Subtle map grid lines -->
+  <line x1="40" y1="0" x2="40" y2="240" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="80" y1="0" x2="80" y2="240" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="120" y1="0" x2="120" y2="240" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="160" y1="0" x2="160" y2="240" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="200" y1="0" x2="200" y2="240" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="0" y1="40" x2="240" y2="40" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="0" y1="80" x2="240" y2="80" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="0" y1="120" x2="240" y2="120" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="0" y1="160" x2="240" y2="160" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="0" y1="200" x2="240" y2="200" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+
+  <!-- Decorative circles (map locations) -->
+  <circle cx="60" cy="70" r="18" fill="white" fill-opacity="0.08"/>
+  <circle cx="180" cy="180" r="24" fill="white" fill-opacity="0.06"/>
+  <circle cx="170" cy="60" r="12" fill="white" fill-opacity="0.07"/>
+  <circle cx="50" cy="185" r="15" fill="white" fill-opacity="0.05"/>
+
+  <!-- Radius ring -->
+  <circle cx="120" cy="108" r="55" stroke="white" stroke-opacity="0.15" stroke-width="1.5" stroke-dasharray="6 4" fill="none"/>
+
+  <!-- Main map pin -->
+  <g transform="translate(120, 60)">
+    <path d="M0 -28C-18.778 -28 -34 -12.778 -34 6c0 24 34 62 34 62s34-38 34-62c0-18.778-15.222-34-34-34z" fill="url(#pin-body)"/>
+    <circle cx="0" cy="6" r="16" fill="#BE5C32"/>
+    <!-- Percentage symbol -->
+    <circle cx="-5" cy="0" r="4" fill="white"/>
+    <circle cx="5" cy="12" r="4" fill="white"/>
+    <rect x="-7" y="5" width="16" height="3" rx="1.5" transform="rotate(-45 -7 5)" fill="white"/>
+  </g>
+
+  <!-- Small pin 1 -->
+  <g transform="translate(60, 140)">
+    <path d="M0 -12C-8 -12 -14 -6 -14 2c0 10 14 26 14 26s14-16 14-26c0-8-6-14-14-14z" fill="white" fill-opacity="0.5"/>
+    <circle cx="0" cy="2" r="5" fill="#D4944C"/>
+  </g>
+
+  <!-- Small pin 2 -->
+  <g transform="translate(185, 115)">
+    <path d="M0 -12C-8 -12 -14 -6 -14 2c0 10 14 26 14 26s14-16 14-26c0-8-6-14-14-14z" fill="white" fill-opacity="0.5"/>
+    <circle cx="0" cy="2" r="5" fill="#D4944C"/>
+  </g>
+
+  <!-- Dollar/deal tag -->
+  <g transform="translate(155, 170)">
+    <rect x="-18" y="-12" width="36" height="24" rx="6" fill="white" fill-opacity="0.9"/>
+    <text x="0" y="5" font-family="system-ui" font-size="14" font-weight="700" fill="#BE5C32" text-anchor="middle">$</text>
+  </g>
+</svg>

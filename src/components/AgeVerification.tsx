@@ -18,7 +18,7 @@ const AgeVerification: React.FC<AgeVerificationProps> = ({ onVerified }) => {
   return (
     <div className="age-gate-overlay">
       <div className="age-gate-modal">
-        <h1>NicMap</h1>
+        <h1>NicBuddy</h1>
         <div className="age-gate-icon">21+</div>
         <h2>Age Verification Required</h2>
         <p>

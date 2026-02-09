@@ -1,6 +1,6 @@
 {
-  "short_name": "NicMap",
-  "name": "NicMap - Find Nicotine Deals Near You",
+  "short_name": "NicBuddy",
+  "name": "NicBuddy - Find Nicotine Deals Near You",
   "icons": [
     {
       "src": "favicon.svg",
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#0891B2",
-  "background_color": "#ffffff"
+  "theme_color": "#BE5C32",
+  "background_color": "#FAF8F6"
 }
