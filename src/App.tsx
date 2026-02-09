@@ -52,8 +52,8 @@ function App() {
 
   const handleShare = async () => {
     const shareData = {
-      title: 'NicBuddy - Find Nicotine Deals Near You',
-      text: 'Check out NicBuddy to find and share nicotine product deals in your area!',
+      title: 'NicMap - Find Nicotine Deals Near You',
+      text: 'Check out NicMap to find and share nicotine product deals in your area!',
       url: window.location.href
     };
 
@@ -231,13 +231,13 @@ function App() {
         <div className="header-hero">
           <img
             src={heroImg}
-            alt="NicBuddy - Deal finder"
+            alt="NicMap - Deal finder"
             className="header-hero-img"
           />
           <div className="header-hero-text">
             <div className="logo-title">
               <Logo size={48} />
-              <h1>NicBuddy</h1>
+              <h1>NicMap</h1>
             </div>
             <p className="header-tagline">Find and share nicotine deals in your area</p>
           </div>

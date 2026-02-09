@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 5001;
 app.use(cors());
 app.use(express.json());
 
-// Deal expiration: 30 days in milliseconds
-const DEAL_EXPIRATION_MS = 30 * 24 * 60 * 60 * 1000;
+// Deal expiration: 7 days in milliseconds
+const DEAL_EXPIRATION_MS = 7 * 24 * 60 * 60 * 1000;
 // Number of reports needed to kill a deal
 const REPORTS_TO_KILL = 2;
 

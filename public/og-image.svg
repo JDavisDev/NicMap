@@ -23,7 +23,7 @@
   </g>
 
   <!-- Title -->
-  <text x="600" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="700" fill="white" text-anchor="middle">NicBuddy</text>
+  <text x="600" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="700" fill="white" text-anchor="middle">NicMap</text>
 
   <!-- Tagline -->
   <text x="600" y="490" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="white" fill-opacity="0.85" text-anchor="middle">Find Nicotine Deals Near You</text>
