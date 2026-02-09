@@ -19,7 +19,7 @@ const Logo: React.FC<{ size?: number }> = ({ size = 48 }) => (
       cx="32"
       cy="24"
       r="12"
-      fill="#0891B2"
+      fill="#BE5C32"
     />
     {/* Percentage/deal symbol */}
     <circle

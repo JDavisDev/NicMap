@@ -1,9 +1,9 @@
 .map-container {
   margin-top: 16px;
-  background: white;
-  border-radius: 24px;
+  background: var(--md-surface-elevated);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 1px 3px var(--md-shadow);
+  box-shadow: 0 1px 4px var(--md-shadow);
   border: 1px solid var(--md-outline);
   position: relative;
 }
@@ -14,7 +14,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  background: white;
+  background: var(--md-surface-elevated);
   border: none;
   padding: 12px 24px;
   border-radius: 100px;
@@ -22,7 +22,7 @@
   font-weight: 600;
   color: var(--md-primary);
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px var(--md-shadow-strong);
   transition: all 0.2s ease;
 }
 
@@ -30,7 +30,7 @@
   background: var(--md-primary);
   color: white;
   transform: translateX(-50%) translateY(-2px);
-  box-shadow: 0 6px 16px rgba(8, 145, 178, 0.3);
+  box-shadow: 0 6px 20px rgba(190, 92, 50, 0.3);
 }
 
 .deal-map {
@@ -67,7 +67,7 @@
 }
 
 .popup-verified {
-  background: linear-gradient(135deg, var(--md-success) 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--md-success) 0%, #1E8449 100%);
   color: white;
   padding: 3px 8px;
   border-radius: 100px;
@@ -111,6 +111,7 @@
   padding: 10px 12px;
   background: var(--md-surface-variant);
   border-radius: 10px;
+  border: 1px solid var(--md-outline);
 }
 
 .popup-original {
@@ -126,7 +127,7 @@
 }
 
 .popup-savings {
-  background: var(--md-success);
+  background: linear-gradient(135deg, var(--md-primary) 0%, var(--md-primary-dark) 100%);
   color: white;
   padding: 3px 8px;
   border-radius: 100px;
@@ -142,7 +143,7 @@
 
 .popup-upvote {
   background: var(--md-surface-variant);
-  border: none;
+  border: 1.5px solid var(--md-outline);
   padding: 8px 14px;
   border-radius: 100px;
   cursor: pointer;
@@ -154,10 +155,12 @@
 
 .popup-upvote:hover {
   background: var(--md-primary-container);
+  border-color: var(--md-primary);
 }
 
 .popup-upvote.upvoted {
   background: var(--md-primary);
+  border-color: var(--md-primary);
   color: white;
   cursor: default;
 }
@@ -187,7 +190,7 @@
 /* Override Leaflet popup styles */
 .leaflet-popup-content-wrapper {
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 24px var(--md-shadow-strong);
 }
 
 .leaflet-popup-content {

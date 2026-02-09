@@ -4,6 +4,7 @@ import DealList from './components/DealList';
 import MapView from './components/MapView';
 import AgeVerification from './components/AgeVerification';
 import Logo from './components/Logo';
+import headerBg from './assets/header-bg.svg';
 import './App.css';
 
 const API_URL = process.env.REACT_APP_API_URL || '';
@@ -213,11 +214,14 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
+        <img src={headerBg} alt="" className="header-bg-img" aria-hidden="true" />
         <div className="logo-title">
-          <Logo size={52} />
-          <h1>NicMap</h1>
+          <Logo size={56} />
+          <div>
+            <h1>NicMap</h1>
+            <p>Find and share nicotine deals in your area</p>
+          </div>
         </div>
-        <p>Find and share nicotine deals in your area</p>
         <button className="share-btn" onClick={handleShare}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="18" cy="5" r="3"/>
